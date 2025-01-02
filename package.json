@@ -7,6 +7,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deno-deploy": "pnpm install && pnpm run build && mv dist/ deno-deploy",
     "astro": "astro"
   },
   "dependencies": {
