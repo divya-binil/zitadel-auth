@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
+    runs-on:  ubuntu-latest
 
     permissions:
       id-token: write # Needed for auth with Deno Deploy
@@ -16,29 +16,24 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Install Deno
-        uses: denoland/setup-deno@v2
+        uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.x
+          deno-version: v1.x
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: lts/*
 
-      - name: Install step
-        run: "npm install"
-
       - name: Build step
-        run: "npm run build"
+        run: "npm run deno-deploy" # `npm run deno-deploy` builds Astro site and stores output in `[repo]/deno-deploy/dist`
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "starlight-zitadel-auth"
-          entrypoint: "server/entry.mjs"
-          root: "dist"
-          
-          
+          entrypoint: server.ts # [repo]/deno-deploy/server.ts is our entrypoint
+          root: "deno-deploy"   
